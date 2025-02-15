@@ -9,6 +9,8 @@ export async function connectToMongoDB(databaseUrl: string) {
 
     await client.connect();
 
+    console.info(`Connected to database`);
+
     const resourceBaseUrl = new URL(databaseUrl);
     const dbName = resourceBaseUrl.pathname.split("/")[1];
 
@@ -16,10 +18,10 @@ export async function connectToMongoDB(databaseUrl: string) {
       throw new Error("Database name not found");
     }
 
-    console.error(`Connecting to database: ${dbName}`);
     db = client.db(dbName);
   } catch (error) {
     console.error("MongoDB connection error:", error);
+
     throw error;
   }
 }
