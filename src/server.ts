@@ -1,19 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import translateRoute from "./routes/translate";
 import { fetchSchemas } from "./database/schema";
 import { connectToMongoDB } from "./database/client";
 
 export const schemaCache: Record<string, any> = {};
 
-dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use("/translate", translateRoute);
 
 (async () => {
-  await connectToMongoDB("mongodb://localhost:27017/test");
+  await connectToMongoDB(process.env.MONGODB_URL!);
   const schemas = await fetchSchemas();
   Object.assign(schemaCache, schemas);
 
